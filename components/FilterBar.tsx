@@ -7,31 +7,33 @@ const RadioGroup = Radio.Group;
 const InputSearch = Input.Search;
 const dropList_problems = (
     <Menu>
-      <Menu.Item key='1'>Beijing</Menu.Item>
-      <Menu.Item key='2'>Shanghai</Menu.Item>
-      <Menu.Item key='3'>Guangzhou</Menu.Item>
+      <Menu.Item key='1'>两数之和</Menu.Item>
+      <Menu.Item key='2'>两数相加</Menu.Item>
+      <Menu.Item key='3'>回文数</Menu.Item>
+      <Menu.Item key='4'>寻找两个正序数组的中位数</Menu.Item>
+      <Menu.Item key='5'>无重复字符串的最大整数</Menu.Item>
     </Menu>
   );
 const dropList_level = (
     <Menu>
-      <Menu.Item key='1'>Beijing</Menu.Item>
-      <Menu.Item key='2'>Shanghai</Menu.Item>
-      <Menu.Item key='3'>Guangzhou</Menu.Item>
+      <Menu.Item key='1'>简单</Menu.Item>
+      <Menu.Item key='2'>普通</Menu.Item>
+      <Menu.Item key='3'>困难</Menu.Item>
     </Menu>
 );
 
 const dropList_status = (
     <Menu>
-      <Menu.Item key='1'>Beijing</Menu.Item>
-      <Menu.Item key='2'>Shanghai</Menu.Item>
-      <Menu.Item key='3'>Guangzhou</Menu.Item>
+      <Menu.Item key='1'>完成</Menu.Item>
+      <Menu.Item key='2'>未完成</Menu.Item>
     </Menu>
 );
 const dropList_tags = (
     <Menu>
-      <Menu.Item key='1'>Beijing</Menu.Item>
-      <Menu.Item key='2'>Shanghai</Menu.Item>
-      <Menu.Item key='3'>Guangzhou</Menu.Item>
+      <Menu.Item key='1'>蓝桥杯</Menu.Item>
+      <Menu.Item key='2'>大学生程序竞赛</Menu.Item>
+      <Menu.Item key='3'>NOIP</Menu.Item>
+      <Menu.Item key='3'>ACM</Menu.Item>
     </Menu>
   );
 export default function FilterBar() {

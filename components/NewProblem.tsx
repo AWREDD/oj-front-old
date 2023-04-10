@@ -48,7 +48,10 @@ export default function NewProblem() {
         
         onSubmit={(values) => {
             console.log(values);
-            
+            const content = JSON.stringify({
+                level: values.level,
+                description: values.content,
+            })
             fetch('http://127.0.0.1:5000/problem/create', {
                 method: 'POST',
                 headers: {
@@ -58,7 +61,7 @@ export default function NewProblem() {
                     {
                         title: values.title,
                         contributor: values.contributor,
-                        content: values.content,
+                        content: content,
                         start_time: values.duration.begin,
                         time_limit: values.timeLimit,
                         

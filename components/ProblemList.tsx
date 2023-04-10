@@ -93,14 +93,18 @@ const data = [
 
 
 export default function ProblemList({data}) {
-    console.log(data)
+    
+    const objectsArray = data.map(jsonString => JSON.parse(jsonString));
+    for (var index in objectsArray){
+        objectsArray[index]['content'] = JSON.parse(objectsArray[index]['content'])
+    }
+    console.log(objectsArray);
     
     
-
     
   return (
     <div>
-        {}     
+            
     </div>
     
   )

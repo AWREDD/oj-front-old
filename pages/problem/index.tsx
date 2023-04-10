@@ -1,65 +1,108 @@
 import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+
+import { useRouter } from 'next/router'
+
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
-
-import axios from 'axios'
-
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism.css"; //Example style, you can use another
+import "prismjs/themes/prism.css";
+
+import axios from "axios";
+
+import { json } from "stream/consumers";
 
 import { Select, Card, Link, Button } from "@arco-design/web-react";
 import { Grid, Divider } from "@arco-design/web-react";
 import { Tag, Space } from "@arco-design/web-react";
 import { Table, TableColumnProps } from "@arco-design/web-react";
+import { Tabs, Typography } from "@arco-design/web-react";
 
 const Row = Grid.Row;
 const Col = Grid.Col;
 const Option = Select.Option;
 const options = ["java", "c", "python"];
 
-import { useState } from "react";
-import { Tabs, Typography } from "@arco-design/web-react";
-
 const { Title, Paragraph, Text } = Typography;
-
 const TabPane = Tabs.TabPane;
+
 const style = {
   textAlign: "center",
   marginTop: 20,
 };
 
-const CodeArea = () => {
+interface content_type {
+  content: string;
+  example: {
+    input: string;
+    output: string;
+  }[];
+  notice: string[];
+  solution: {
+    description: string;
+    code: string;
+  };
+}
+
+interface problem_type {
+  id: number;
+  title: string;
+  contributor: string;
+  start_time: string;
+  time_limit: number;
+  content: content_type;
+  status: string;
+  tag: {
+    content: string;
+    color: string;
+  }[];
+}
+
+function timestampToTime(timestamp: number) {
+
+  var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+  var Y = date.getFullYear() + "-";
+  var M =
+    (date.getMonth() + 1 < 10
+      ? "0" + (date.getMonth() + 1)
+      : date.getMonth() + 1) + "-";
+  var D = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + " ";
+  var h =
+    (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
+  var m =
+    (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+    ":";
+  var s = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+  return Y + M + D + h + m + s;
+}
+
+export default function CodeArea({ data }: { data: problem_type }) {
+
+  const router = useRouter()
+  const { pid } = router.query
+
   const [activeTab, setActiveTab] = useState("1");
 
   const [code, setCode] = React.useState(
     `function add(a, b) {\n  return a + b;\n}`
   );
 
-  const tags = [
-    { index: 0, content: "easy", color: "green" },
-    { index: 1, content: "2021", color: "orange" },
-    { index: 2, content: "noip", color: "red" },
-  ];
+  const [language, setLanguage] = React.useState("java");
+
+  console.log("tags", data);
+
+  const tags = JSON.parse(data.tag);
+
+  console.log("data1111:", data.content);
+
+  const content_data = JSON.parse(data.content);
 
   const description = {
-    content:
-      "给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。请你将两个数相加，并以相同形式返回一个表示和的链表。你可以假设除了数字 0 之外，这两个数都不会以 0 开头。",
-    example: [
-      {
-        input: "l1 = [2,4,3], l2 = [5,6,4]",
-        output: "l3 = [7,0,8]",
-      },
-      {
-        input: "l1 = [0], l2 = [0]",
-        output: "l3 = [0]",
-      },
-    ],
-    notice: [
-      "每个链表中的节点数在范围 [1, 100] 内",
-      "0 <= Node.val <= 9",
-      "题目数据保证列表表示的数字不含前导零",
-    ],
+    content: content_data.content,
+    example: content_data.example,
+    notice: content_data.notice,
   };
 
   const record_col = [
@@ -112,37 +155,38 @@ const CodeArea = () => {
   ];
 
   const solution = {
-    decription:
-      "由于输入的两个链表都是逆序存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。具体而言，如果当前两个链表处相应位置的数字为 n1,n2n1,n2n1,n2，进位值为 carry\textit{carry}carry，则它们的和为 n1+n2+carryn1+n2+\textit{carry}n1+n2+carry；其中，答案链表处相应位置的数字为 (n1+n2+carry) mod 10(n1+n2+\textit{carry}) \bmod 10(n1+n2+carry)mod10，而新的进位值为 ⌊n1+n2+carry10⌋lfloor\frac{n1+n2+\textit{carry}}{10}\rfloor⌊ 10 n1+n2+carry⌋。如果两个链表的长度不同，则可以认为长度短的链表的后面有若干个 000 。此外，如果链表遍历结束后，有 carry>0\textit{carry} > 0carry>0，还需要在答案链表的后面附加一个节点，节点的值为 carry\textit{carry}carry。",
-    code: "test",
+    decription: content_data.solution.description,
+    code: content_data.solution.code,
   };
 
   const submitCode = async () => {
-    return await axios({
-      method: "post",
-      url: "localhost:3306/oj/submit",
-      data: {}
+    console.log({
+      problem_id: data.id,
+      user_id: 1,
+      create_time: timestampToTime(new Date().getTime()),
+      language: { language },
+      code: { code },
     });
-  };
-
-  const getProblem = async () => {
-    return await axios({
-      method: "get",
-      url: "localhost:3306/ojproblem",
-      data: {}
+    return await axios.post("http://127.0.0.1:5000/submit", {
+      problem_id: data.id,
+      create_time: timestampToTime(new Date().getTime()),
+      language: language,
+      code: code,
     });
-  };
-
-  const getSolution = async () => {
-
   };
 
   const getSubmitHistories = async () => {
-    
+    await axios.post("http://");
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div style={{ width: "90%" }}>
         <Divider orientation="left">Horizontal</Divider>
         <Row className="grid-gutter-demo" gutter={24}>
@@ -150,8 +194,8 @@ const CodeArea = () => {
             <div>
               <Card title="Q1. 两数相加" style={{ height: 1000 }}>
                 <Space wrap>
-                  {tags.map((e) => (
-                    <Tag key={e.index} color={e.color} bordered>
+                  {tags.map((e, i) => (
+                    <Tag key={i} color={e.color} bordered>
                       {e.content}
                     </Tag>
                   ))}
@@ -219,9 +263,7 @@ const CodeArea = () => {
                     <Select
                       placeholder="选择语言"
                       style={{ width: 154 }}
-                      onChange={(value) =>
-                        console.log("select language: ", value)
-                      }
+                      onChange={(value) => setLanguage(value)}
                     >
                       {options.map((option, index) => (
                         <Option
@@ -233,7 +275,7 @@ const CodeArea = () => {
                         </Option>
                       ))}
                     </Select>
-                    <Button key={1} type="primary">
+                    <Button key={1} type="primary" onClick={submitCode}>
                       Submit
                     </Button>
                   </Space>
@@ -257,6 +299,16 @@ const CodeArea = () => {
       </div>
     </div>
   );
-};
+}
 
-export default CodeArea;
+export const getStaticProps = async () => {
+  
+  const res = await axios.get("http://127.0.0.1:5000/problem/detail?id=1");
+  // const { data } = JSON.parse(res.data.data.content);
+  const data = res.data.data.problem;
+  return {
+    props: {
+      data,
+    },
+  };
+};

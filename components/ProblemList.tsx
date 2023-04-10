@@ -5,85 +5,87 @@ import { Card, Link, Space } from '@arco-design/web-react';
 const columns = [
   {
     title: '状态',
-    dataIndex: 'name',
-    sorter: (a, b) => a.name.length - b.name.length,
+    dataIndex: 'status',
+    filters: [
+        {
+          text: '完成',
+          value: '完成',
+        },
+        {
+          text: '未完成',
+          value: '未完成',
+        },
+        
+      ],
+      onFilter: (value, row) => row.status.indexOf(value) > -1,
   },
   {
     title: '题目',
-    dataIndex: 'salary',
-    sorter: (a, b) => a.salary - b.salary,
-    filters: [
-      {
-        text: '> 20000',
-        value: '20000',
-      },
-      {
-        text: '> 30000',
-        value: '30000',
-      },
-    ],
-    defaultFilters: ['20000'],
-    onFilter: (value, row) => row.salary > value,
-    sortDirections: ['ascend'],
-    defaultSortOrder: 'ascend',
+    dataIndex: 'title',
+    sorter: (a, b) => a.title > b.title,
+    
   },
   {
     title: '难度',
-    dataIndex: 'address',
+    dataIndex: 'level',
     filters: [
       {
-        text: 'London',
-        value: 'London',
+        text: '简单',
+        value: '简单',
       },
       {
-        text: 'Paris',
-        value: 'Paris',
+        text: '普通',
+        value: '普通',
+      },
+      {
+        text: '困难',
+        value: '困难',
       },
     ],
-    onFilter: (value, row) => row.address.indexOf(value) > -1,
+    onFilter: (value, row) => row.level.indexOf(value) > -1,
     filterMultiple: false,
   },
   {
     title: '通过率',
-    dataIndex: 'email',
-    sorter: (a, b) => a.email.length - b.email.length,
+    dataIndex: 'ac_rate',
+    sorter: (a, b) => a.ac_rate - b.ac_rate,
   },
 ];
 const data = [
   {
-    key: '1',
-    name: 'Jane Doe',
-    salary: 23000,
-    address: '32 Park Road, London',
-    email: 'jane.doe@example.com',
+    status: '完成',
+    title: '两数之和',
+    level: '简单',
+    ac_rate: 0.9,
+    
   },
   {
-    key: '2',
-    name: 'Alisa Ross',
-    salary: 25000,
-    address: '35 Park Road, Paris',
-    email: 'alisa.ross@example.com',
+    status: '完成',
+    title: '两数相加',
+    level: '中等',
+    ac_rate: 0.8,
+    
   },
   {
-    key: '3',
-    name: 'Kevin Sandra',
-    salary: 22000,
-    address: '31 Park Road, London',
-    email: 'kevin.sandra@example.com',
+    status: '未完成',
+    title: '无重复字符串的最大整数',
+    level: '中等',
+    ac_rate: 0.6,
+    
   },
   {
-    key: '4',
-    name: 'Ed Hellen',
-    salary: 17000,
-    address: '42 Park Road, Paris',
-    email: 'ed.hellen@example.com',
+    status: '完成',
+    title: '回文数',
+    level: '简单',
+    ac_rate: 0.9,
+    
   },
   {
-    key: '5',
-    name: 'William Smith',
-    salary: 27000,
-    address: '62 Park Road, London',
-    email: 'william.smith@example.com',
+    status: '未完成',
+    title: '寻找两个正序数组的中位数',
+    level: '困难',
+    ac_rate: 0.2,
+    
   },
 ];
 

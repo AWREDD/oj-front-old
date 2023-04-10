@@ -12,6 +12,9 @@ export default function NewProblem() {
     const [level, setLevel] = React.useState('simple');
     const [form] = Form.useForm();
     const formRef = useRef();
+    const [posts, setPosts] = useState([]);
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
   return (
     <div>
         <Button onClick={() => setVisible(true)} type='primary'>
@@ -20,7 +23,11 @@ export default function NewProblem() {
         <Modal
             title='Modal Title'
             visible={visible}
-            onOk={() => setVisible(false)}
+            onOk={() =>{
+                formRef.current.submit()
+                formRef.current.resetFields()
+                setVisible(false)
+            } }
             onCancel={() =>{
                 formRef.current.resetFields()
                 setVisible(false)
@@ -36,6 +43,37 @@ export default function NewProblem() {
         
         onValuesChange={(_, v) => {
           console.log(_, v);
+        }}
+        
+        onSubmit={(values) => {
+            console.log(values);
+            fetch('http://127.0.0.1:5000/problem/create', {
+                method: 'POST',
+                headers: {
+                 'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        title: values.title,
+                        contributor: values.contributor,
+                        content: values.content,
+                        start_time: values.duration.begin,
+                        time_limit: values.timeLimit,
+                        
+                    }
+
+                ),
+      })
+         .then((res) => res.json())
+         .then((post) => {
+            setPosts((posts) => [post, ...posts]);
+            setTitle('');
+            setBody('');
+         })
+         .catch((err) => {
+            console.log(err.message);
+         });
+
         }}
       >
         <FormItem
@@ -54,10 +92,10 @@ export default function NewProblem() {
         <Input placeholder='请输入' />
       </FormItem>
       <FormItem
-        label='题目描述'
-        field='description'
+        label='题目内容'
+        field='content'
        >
-        <TextArea placeholder='请输入题目描述' />
+        <TextArea placeholder='请输入题目内容' />
       </FormItem>
       <FormItem label='题目难度' field='level'>
         <RadioGroup onChange={setLevel} type='button' name='level' value={level}>

@@ -2,6 +2,8 @@ import React from "react";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
 
+import axios from 'axios'
+
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism.css"; //Example style, you can use another
@@ -18,6 +20,7 @@ const options = ["java", "c", "python"];
 
 import { useState } from "react";
 import { Tabs, Typography } from "@arco-design/web-react";
+
 const { Title, Paragraph, Text } = Typography;
 
 const TabPane = Tabs.TabPane;
@@ -112,6 +115,30 @@ const CodeArea = () => {
     decription:
       "由于输入的两个链表都是逆序存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。我们同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。具体而言，如果当前两个链表处相应位置的数字为 n1,n2n1,n2n1,n2，进位值为 carry\textit{carry}carry，则它们的和为 n1+n2+carryn1+n2+\textit{carry}n1+n2+carry；其中，答案链表处相应位置的数字为 (n1+n2+carry) mod 10(n1+n2+\textit{carry}) \bmod 10(n1+n2+carry)mod10，而新的进位值为 ⌊n1+n2+carry10⌋lfloor\frac{n1+n2+\textit{carry}}{10}\rfloor⌊ 10 n1+n2+carry⌋。如果两个链表的长度不同，则可以认为长度短的链表的后面有若干个 000 。此外，如果链表遍历结束后，有 carry>0\textit{carry} > 0carry>0，还需要在答案链表的后面附加一个节点，节点的值为 carry\textit{carry}carry。",
     code: "test",
+  };
+
+  const submitCode = async () => {
+    return await axios({
+      method: "post",
+      url: "localhost:3306/oj/submit",
+      data: {}
+    });
+  };
+
+  const getProblem = async () => {
+    return await axios({
+      method: "get",
+      url: "localhost:3306/ojproblem",
+      data: {}
+    });
+  };
+
+  const getSolution = async () => {
+
+  };
+
+  const getSubmitHistories = async () => {
+    
   };
 
   return (

@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { Form, Input, Button, Grid, Modal, Space, Radio,InputTag,InputNumber} from '@arco-design/web-react';
 import { IconArrowRise, IconArrowFall, IconDelete } from '@arco-design/web-react/icon';
 import { DatePicker } from '@arco-design/web-react';
+import { stringify } from 'querystring';
 const TextArea = Input.TextArea;
 const FormItem = Form.Item
 const RadioGroup = Radio.Group;
@@ -47,6 +48,7 @@ export default function NewProblem() {
         
         onSubmit={(values) => {
             console.log(values);
+            
             fetch('http://127.0.0.1:5000/problem/create', {
                 method: 'POST',
                 headers: {

@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from '@arco-design/web-react';
 import { Card, Link, Space } from '@arco-design/web-react';
 
+
 const columns = [
   {
     title: '状态',
@@ -91,20 +92,18 @@ const data = [
 
 
 
-export default function ProblemList() {
-  return (
-    <div className='m-4'>
-    <Card
-        
-        className='card-custom-hover-style'
-        
-        hoverable
-        
-      >
-        <Table columns={columns} data={data} />
-    </Card>
+export default function ProblemList({data}) {
+    console.log(data)
     
+    
+
+    
+  return (
+    <div>
+        {}     
     </div>
     
   )
 }
+
+

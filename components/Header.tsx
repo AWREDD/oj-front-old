@@ -2,10 +2,10 @@
 import React from 'react'
 import User from './User'
 import Image from 'next/image'
-import { Button } from "@arco-design/web-react";
+
 import Logo from '../assets/images/logo.png'
 import "@arco-design/web-react/dist/css/arco.css"
-import { useSession, signIn, signOut, SessionProvider} from "next-auth/react"
+
 
 export default function Header() {
   

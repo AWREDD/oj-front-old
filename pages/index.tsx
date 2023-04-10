@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Header from '@/components/Header'
 import ProblemList from '@/components/ProblemList'
 import FilterBar from '@/components/FilterBar'
+import NewProblem from '@/components/NewProblem'
 
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       
       <FilterBar></FilterBar>
       <ProblemList></ProblemList>
+      <NewProblem></NewProblem>
     </>
   )
 }

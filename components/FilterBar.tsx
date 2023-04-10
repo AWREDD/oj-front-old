@@ -37,7 +37,7 @@ const dropList_tags = (
 export default function FilterBar() {
   return (
     <>
-    <div className='flex justify-between items-center'>
+    <div className='flex justify-between items-center bg-gray-50'>
     <div className='justify-between space-x-10'>
         <Dropdown droplist={dropList_problems} position='bl'>
             <Button type='text'>
